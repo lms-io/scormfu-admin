@@ -29,15 +29,48 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="#">Organizations</a></li>
               <li><a href="#">Users</a></li>
-              <li><a href="#">Content</a></li>
+              <li><a href="#">Courses</a></li>
+              <li><a href="#">Registrations</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
 
+      <form>
+        <div class="form-group">
+          <label for="key">Login Key</label>
+          <input type="key" class="form-control" id="key" placeholder="Key">
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> Remember me 
+          </label>
+        </div>
+        <a class="btn btn-default" onclick="login()">Login</a>
+      </form>
     </div> <!-- /container -->
+
+    <script language="javascript">
+      var key = "";
+      function login() {
+        key = $("#key").val();
+        $.ajax({
+            url: configuration.scormfu + key, 
+            jsonp: "callback",
+            dataType: "jsonp",
+            data: {
+                q: "select title,abstract,url from search.news where query=\"cat\"",
+                format: "json"
+            },
+            success: function( response ) {
+                if(response) {
+                  console.log("login successful");
+                } 
+            }
+        });
+      }
+    </script>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
