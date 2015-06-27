@@ -28,7 +28,7 @@
             <a class="navbar-brand" href="#">Scorm-Fu</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" style="display:none;">
               <li><a href="#">Users</a></li>
               <li><a href="#">Courses</a></li>
               <li><a href="#">Registrations</a></li>
@@ -37,38 +37,59 @@
         </div><!--/.container-fluid -->
       </nav>
 
-      <form>
-        <div class="form-group">
-          <label for="key">Login Key</label>
-          <input type="key" class="form-control" id="key" placeholder="Key">
-        </div>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox"> Remember me 
-          </label>
-        </div>
-        <a class="btn btn-default" onclick="login()">Login</a>
-      </form>
+      <div id="form-login">
+        <form>
+          <div class="form-group">
+            <label for="key">Login Key</label>
+            <input type="key" class="form-control" id="key" placeholder="Key">
+          </div>
+          <a class="btn btn-default" onclick="login()">Login</a>
+        </form>
+      </div>
+
+      <ul class="list-group" id="list-organizations">
+      </ul>
     </div> <!-- /container -->
+
 
     <script language="javascript">
       var key = "";
       function login() {
         key = $("#key").val();
+        var url = configuration.scormfu + key; 
         $.ajax({
-            url: configuration.scormfu + key, 
+            url:url, 
             jsonp: "callback",
             dataType: "jsonp",
-            data: {
-                q: "select title,abstract,url from search.news where query=\"cat\"",
-                format: "json"
-            },
             success: function( response ) {
                 if(response) {
                   console.log("login successful");
+                  $("#form-login").fadeOut();
+                  organization_list();
                 } 
             }
         });
+      }
+
+      function organization_list() {
+        var url = configuration.scormfu + key + "/organization/all";
+        var html = '';
+
+        $.ajax({
+            url:url, 
+            jsonp: "callback",
+            dataType: "jsonp",
+            success: function( response ) {
+              for(var i in response) {
+                var o = response[i];
+                console.log(o);
+                html += '<li class="list-group-item">' + o.name + '</li>';
+              }
+              console.log(html);
+              $('#list-organizations').html(html);
+            }
+        });
+
       }
     </script>
 
