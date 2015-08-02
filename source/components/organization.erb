@@ -1,0 +1,53 @@
+<script id="organization-list-template" type="text/x-handlebars-template">
+  <div>
+    <div class="panel-heading">
+      Organizations 
+      <a href="#" data-toggle="modal" data-target="#new-organization">Create New</a>
+    </div>
+    <table class="table" id="list-organizations-content">
+      <tr><th>Name</th><th>ID</th><th></th><th>Actions</th></tr>
+      {{#each .}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{id}}</td>
+          <td>&nbsp;</td>
+          <td>
+            <a href='#'>delete</a> | 
+            <a href='#'>courses</a> | 
+            <a href='#'>registrations</a> 
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+</script>
+
+<script id="organization-create-template" type="text/x-handlebars-template">
+    <div class="modal fade" id="new-organization" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create Organization</h4>
+          </div>
+          <div class="modal-body">
+            <form> 
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="name" class="form-control" id="name" placeholder="Name">
+              </div>
+              <div class="form-group">
+                <label for="name">Key (optional)</label>
+                <input type="name" class="form-control" id="id">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="organization_save()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- /container -->
+</script>
