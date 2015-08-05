@@ -1,4 +1,6 @@
 <script id="organization-list-template" type="text/x-handlebars-template">
+<div class="organization-create modal fade"></div>
+
 <div class="panel-heading">
   Organizations 
   <a href="#" 
@@ -15,7 +17,9 @@
         <td>{{id}}</td>
         <td>&nbsp;</td>
         <td>
-          <a href='#'>courses</a> | 
+          <a href='#'
+            onclick='courseController.list.dispatch("{{id}}");'>
+              courses</a> | 
           <a href='#'>registrations</a> 
         </td>
       </tr>
