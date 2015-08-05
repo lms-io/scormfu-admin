@@ -17,10 +17,21 @@
         <td>{{id}}</td>
         <td>&nbsp;</td>
         <td>
+          course 
+          <a href='#'
+            onclick='courseController.create.dispatch("{{id}}");'>
+              create</a> 
           <a href='#'
             onclick='courseController.list.dispatch("{{id}}");'>
-              courses</a> | 
-          <a href='#'>registrations</a> 
+              list</a> | 
+          registration 
+          <a href='#'
+            onclick='registrationController.create.dispatch("{{id}}");'>
+              create</a> 
+          <a href='#'
+            onclick='registrationController.list.dispatch("{{id}}");'>
+              list</a> | 
+
         </td>
       </tr>
     {{/each}}
