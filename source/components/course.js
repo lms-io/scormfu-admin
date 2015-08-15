@@ -8,7 +8,7 @@ var courseController = {
 };
 
 courseController.list.add(function(org) {
-  var url = configuration.scormfu + _KEY_ + "/" + org + "/course/all";
+  var url = scormfu_config.api + _KEY_ + "/" + org + "/course/all";
   var html = '';
 
   $.ajax({
@@ -35,13 +35,13 @@ courseController.create.add(function(org) {
 courseController.save.add(function(org) {
   var name = $('.course-create #name').val();
   var id = $('.course-create #id').val();
-  var url = configuration.scormfu + _KEY_ + "/" + org + "/course/new/"+name+"/"+id;
+  var url = scormfu_config.api + _KEY_ + "/" + org + "/course/new/"+name+"/"+id;
   $.ajax({
       url:url, 
       jsonp: "callback",
       dataType: "jsonp",
       success: function( response ) {
-        var url = configuration.scormfu + _KEY_ + "/" + org + "/upload/" + response.id;
+        var url = scormfu_config.api + _KEY_ + "/" + org + "/upload/" + response.id;
         var data = new FormData();
         data.append( 'upload', $( '#upload' )[0].files[0] );
         $.ajax({

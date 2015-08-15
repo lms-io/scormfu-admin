@@ -9,7 +9,7 @@ var organizationController = {
 
 
 organizationController.list.add(function() {
-  var url = configuration.scormfu + _KEY_ + "/organization/all";
+  var url = scormfu_config.api + _KEY_ + "/organization/all";
   var html = '';
 
   $.ajax({
@@ -36,7 +36,7 @@ organizationController.create.add(function() {
 organizationController.save.add(function() {
   var name = $('.organization-create #name').val();
   var id = $('.organization-create #id').val();
-  var url = configuration.scormfu + _KEY_ + "/organization/new/"+name+"/"+id;
+  var url = scormfu_config.api + _KEY_ + "/organization/new/"+name+"/"+id;
   $.ajax({
       url:url, 
       jsonp: "callback",
