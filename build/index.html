@@ -10,6 +10,7 @@
     <title>Welcome to Scorm-Fu</title>
     
     <link href="/stylesheets/normalize.css" rel="stylesheet" type="text/css" /><link href="/stylesheets/all.css" rel="stylesheet" type="text/css" />
+    <script src="config.js" type="text/javascript"></script>
     <script src="/javascripts/all.js" type="text/javascript"></script>
   </head>
   
@@ -25,7 +26,7 @@ var organizationController = {
 
 
 organizationController.list.add(function() {
-  var url = configuration.scormfu + _KEY_ + "/organization/all";
+  var url = scormfu_config.api + _KEY_ + "/organization/all";
   var html = '';
 
   $.ajax({
@@ -52,7 +53,7 @@ organizationController.create.add(function() {
 organizationController.save.add(function() {
   var name = $('.organization-create #name').val();
   var id = $('.organization-create #id').val();
-  var url = configuration.scormfu + _KEY_ + "/organization/new/"+name+"/"+id;
+  var url = scormfu_config.api + _KEY_ + "/organization/new/"+name+"/"+id;
   $.ajax({
       url:url, 
       jsonp: "callback",
@@ -147,7 +148,7 @@ var courseController = {
 };
 
 courseController.list.add(function(org) {
-  var url = configuration.scormfu + _KEY_ + "/" + org + "/course/all";
+  var url = scormfu_config.api + _KEY_ + "/" + org + "/course/all";
   var html = '';
 
   $.ajax({
@@ -174,13 +175,13 @@ courseController.create.add(function(org) {
 courseController.save.add(function(org) {
   var name = $('.course-create #name').val();
   var id = $('.course-create #id').val();
-  var url = configuration.scormfu + _KEY_ + "/" + org + "/course/new/"+name+"/"+id;
+  var url = scormfu_config.api + _KEY_ + "/" + org + "/course/new/"+name+"/"+id;
   $.ajax({
       url:url, 
       jsonp: "callback",
       dataType: "jsonp",
       success: function( response ) {
-        var url = configuration.scormfu + _KEY_ + "/" + org + "/upload/" + response.id;
+        var url = scormfu_config.api + _KEY_ + "/" + org + "/upload/" + response.id;
         var data = new FormData();
         data.append( 'upload', $( '#upload' )[0].files[0] );
         $.ajax({
@@ -277,7 +278,7 @@ var registrationController = {
 };
 
 registrationController.list.add(function(org) {
-  var url = configuration.scormfu + _KEY_ + "/" + org + "/registration/all";
+  var url = scormfu_config.api + _KEY_ + "/" + org + "/registration/all";
   var html = '';
 
   $.ajax({
@@ -294,7 +295,7 @@ registrationController.list.add(function(org) {
 });
 
 registrationController.create.add(function(org) {
-  var url = configuration.scormfu + _KEY_ + "/" + org + "/course/all";
+  var url = scormfu_config.api + _KEY_ + "/" + org + "/course/all";
   $.ajax({
     url:url, 
     jsonp: "callback",
@@ -311,7 +312,7 @@ registrationController.create.add(function(org) {
 registrationController.save.add(function(org) {
   var name = $('.registration-create #name').val();
   var id = $('.registration-create #id').val();
-  var url = configuration.scormfu + _KEY_ + "/" + org + "/registration/new/"+name+"/"+id;
+  var url = scormfu_config.api + _KEY_ + "/" + org + "/registration/new/"+name+"/"+id;
   $.ajax({
       url:url, 
       jsonp: "callback",
@@ -319,7 +320,7 @@ registrationController.save.add(function(org) {
       success: function( response ) {
         $('.registration-create #course').each(function() {
           
-          var url = configuration.scormfu + _KEY_ + "/" + org + "/link/"+response.id+"/"+$(this).val();
+          var url = scormfu_config.api + _KEY_ + "/" + org + "/link/"+response.id+"/"+$(this).val();
           $.ajax({
               url:url, 
               jsonp: "callback",
