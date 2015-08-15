@@ -1,3 +1,5 @@
+<script language="javascript">
+
 var courseController = {
   list : new signals.Signal(),
   create : new signals.Signal(),
@@ -56,3 +58,4 @@ courseController.save.add(function(org) {
       }
   });
 });
+</script>

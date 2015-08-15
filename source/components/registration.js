@@ -1,3 +1,5 @@
+<script language="javascript">
+
 var registrationController = {
   list : new signals.Signal(),
   create : new signals.Signal(),
@@ -62,3 +64,4 @@ registrationController.save.add(function(org) {
       }
   });
 });
+</script>

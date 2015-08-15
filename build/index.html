@@ -14,7 +14,57 @@
   </head>
   
   <body class="index">
-    <script src="components/organization.js" type="text/javascript"></script>
+    <script language="javascript">
+
+var organizationController = {
+  list : new signals.Signal(),
+  create : new signals.Signal(),
+  save : new signals.Signal(),
+  saveComplete : new signals.Signal()
+};
+
+
+organizationController.list.add(function() {
+  var url = configuration.scormfu + _KEY_ + "/organization/all";
+  var html = '';
+
+  $.ajax({
+    url:url, 
+    jsonp: "callback",
+    dataType: "jsonp",
+    success: function( response ) {
+      var source   = $("#organization-list-template").html();
+      var template = Handlebars.compile(source);
+      var html = template(response);
+      $('.organization-list').empty().append(html);
+    }
+  });
+
+});
+
+organizationController.create.add(function() {
+  var source   = $("#organization-create-template").html();
+  var template = Handlebars.compile(source);
+  var html = template({});
+  $('.organization-create').empty().append(html).modal();
+});
+
+organizationController.save.add(function() {
+  var name = $('.organization-create #name').val();
+  var id = $('.organization-create #id').val();
+  var url = configuration.scormfu + _KEY_ + "/organization/new/"+name+"/"+id;
+  $.ajax({
+      url:url, 
+      jsonp: "callback",
+      dataType: "jsonp",
+      success: function( response ) {
+        $('.organization-create').modal('hide');
+        organizationController.list.dispatch();
+      }
+  });
+});
+</script>
+
 <script id="organization-list-template" type="text/x-handlebars-template">
 <div class="organization-create modal fade"></div>
 
@@ -87,7 +137,68 @@
 </script>
 
 
-<script src="components/course.js" type="text/javascript"></script>
+<script language="javascript">
+
+var courseController = {
+  list : new signals.Signal(),
+  create : new signals.Signal(),
+  save : new signals.Signal(),
+  saveComplete : new signals.Signal()
+};
+
+courseController.list.add(function(org) {
+  var url = configuration.scormfu + _KEY_ + "/" + org + "/course/all";
+  var html = '';
+
+  $.ajax({
+    url:url, 
+    jsonp: "callback",
+    dataType: "jsonp",
+    success: function( response ) {
+      var source   = $("#course-list-template").html();
+      var template = Handlebars.compile(source);
+      var html = template(response);
+      $('.course-list').empty().append(html).modal('show');
+    }
+  });
+
+});
+
+courseController.create.add(function(org) {
+  var source   = $("#course-create-template").html();
+  var template = Handlebars.compile(source);
+  var html = template({organization:org});
+  $('.course-create').empty().append(html).modal();
+});
+
+courseController.save.add(function(org) {
+  var name = $('.course-create #name').val();
+  var id = $('.course-create #id').val();
+  var url = configuration.scormfu + _KEY_ + "/" + org + "/course/new/"+name+"/"+id;
+  $.ajax({
+      url:url, 
+      jsonp: "callback",
+      dataType: "jsonp",
+      success: function( response ) {
+        var url = configuration.scormfu + _KEY_ + "/" + org + "/upload/" + response.id;
+        var data = new FormData();
+        data.append( 'upload', $( '#upload' )[0].files[0] );
+        $.ajax({
+          url: url, 
+          type: "POST",    
+          data: data, 
+          contentType: false,
+          cache: false,           
+          processData:false,     
+          success: function(data) {
+            $('.course-create').modal('hide');
+          }
+        });
+      }
+  });
+});
+</script>
+
 <div class="course-list modal fade"></div>
 
 <script id="course-list-template" type="text/x-handlebars-template">
@@ -156,7 +267,74 @@
 </script>
 
 
-<script src="components/registration.js" type="text/javascript"></script>
+<script language="javascript">
+
+var registrationController = {
+  list : new signals.Signal(),
+  create : new signals.Signal(),
+  save : new signals.Signal(),
+  saveComplete : new signals.Signal()
+};
+
+registrationController.list.add(function(org) {
+  var url = configuration.scormfu + _KEY_ + "/" + org + "/registration/all";
+  var html = '';
+
+  $.ajax({
+    url:url, 
+    jsonp: "callback",
+    dataType: "jsonp",
+    success: function( response ) {
+      var source   = $("#registration-list-template").html();
+      var template = Handlebars.compile(source);
+      var html = template(response);
+      $('.registration-list').empty().append(html).modal('show');
+    }
+  });
+});
+
+registrationController.create.add(function(org) {
+  var url = configuration.scormfu + _KEY_ + "/" + org + "/course/all";
+  $.ajax({
+    url:url, 
+    jsonp: "callback",
+    dataType: "jsonp",
+    success: function( response ) {
+      var source   = $("#registration-create-template").html();
+      var template = Handlebars.compile(source);
+      var html = template({organization:org,courses:response});
+      $('.registration-create').empty().append(html).modal();
+    }
+  });
+});
+
+registrationController.save.add(function(org) {
+  var name = $('.registration-create #name').val();
+  var id = $('.registration-create #id').val();
+  var url = configuration.scormfu + _KEY_ + "/" + org + "/registration/new/"+name+"/"+id;
+  $.ajax({
+      url:url, 
+      jsonp: "callback",
+      dataType: "jsonp",
+      success: function( response ) {
+        $('.registration-create #course').each(function() {
+          
+          var url = configuration.scormfu + _KEY_ + "/" + org + "/link/"+response.id+"/"+$(this).val();
+          $.ajax({
+              url:url, 
+              jsonp: "callback",
+              dataType: "jsonp",
+              success: function( response ) {
+                console.log(response);
+              }
+          });
+          $('.registration-create').modal('hide');
+        });
+      }
+  });
+});
+</script>
+
 <div class="registration-list modal fade"></div>
 
 <script id="registration-list-template" type="text/x-handlebars-template">

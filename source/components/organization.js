@@ -1,3 +1,5 @@
+<script language="javascript">
+
 var organizationController = {
   list : new signals.Signal(),
   create : new signals.Signal(),
@@ -45,3 +47,4 @@ organizationController.save.add(function() {
       }
   });
 });
+</script>
