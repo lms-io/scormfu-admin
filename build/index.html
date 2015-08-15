@@ -431,7 +431,7 @@ registrationController.save.add(function(org) {
 var _KEY_ = "";
 function login() {
   _KEY_ = $("#key").val();
-  var url = configuration.scormfu + _KEY_; 
+  var url = scormfu_config.api + _KEY_; 
   $.ajax({
       url:url, 
       jsonp: "callback",
